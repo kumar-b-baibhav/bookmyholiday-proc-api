@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_2f85b092_756b_4be9_ac47_6b41fdcfa206_Output_Variables_isHotelBookingValid = Any
+

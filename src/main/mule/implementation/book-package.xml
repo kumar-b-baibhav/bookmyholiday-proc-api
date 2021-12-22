@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<flow name="holiday-booking-flow" doc:id="591bf563-91a4-4db6-8e58-6a2b5837afb6" >
+		<async doc:name="Async" doc:id="57cb4acc-9f7d-41c6-aad7-e06f4940be80" >
+			<logger level="INFO" doc:name="Log Book Package Request Status" doc:id="76ec0488-ec7b-4dbe-bcde-fa180125cd7a" message='"Request for book package flow started."' />
+		</async>
+		<set-variable value='#[(payload.packageID splitBy ("-"))[1]]' doc:name="flightID" doc:id="155a1e94-ab47-40da-b9ad-d6425fd9cf46" variableName="flightID"/>
+		<set-variable value='#[(payload.packageID splitBy("-"))[2]]' doc:name="hotelID" doc:id="757e0cff-e4a0-41d7-8069-a6297fb30e16" variableName="hotelID"/>
+		<set-variable value="#[uuid()]" doc:name="transactionID" doc:id="9ed2f313-4190-4364-8d2d-0dcd383d1f48" variableName="transactionID"/>
+		<set-variable value="#[payload.noOfDays]" doc:name="noOfDays" doc:id="542704ef-179f-4dcd-853b-afa798511c1b" variableName="noOfDays"/>
+		<flow-ref doc:name="Validate Package" doc:id="7ef5cbf7-deb7-481b-b85c-8c34d7f346ba" name="validate-package-sub-flow" />
+		<ee:transform doc:name="Ceate Holiday Package Requests" doc:id="c4acff78-aa05-4e27-a3ca-f675772c5795">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="flightDetails"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"flightID": vars.flightID,
+	"bookingId": vars.transactionID,
+	"no_of_seats": payload.noOfGuests,
+	"dateOfBooking": payload.bookingDate
+}]]></ee:set-variable>
+				<ee:set-variable variableName="carDetails"><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "partnerId": (payload.packageID splitBy ("-"))[4] as Number,
+  "bookingDetails": {
+    "bookingID": vars.transactionID,
+    "source": payload.carDetails.bookingDetails.source,
+    "destination": payload.carDetails.bookingDetails.source as String ++ "-AIRPORT",
+    "date": payload.bookingDate,
+    "cabType": payload.carDetails.bookingDetails.cabType
+  } 
+  
+}]]></ee:set-variable>
+				<ee:set-variable variableName="hotelDetails"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	hotelID: vars.hotelID,
+	transactionID: vars.transactionID,
+    guestName: payload.guestName,
+    guestPhone: payload.guestPhone,
+    noOfDays: payload.noOfDays,
+    bookingDate: payload.bookingDate,
+    roomType: (payload.packageID splitBy("-"))[3],
+    noOfRooms: payload.noOfRooms
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log Package Validation Status" doc:id="e11f2b20-99bc-450f-ad5e-3e3fd6f9f3ab" message='"Holiday package request successfully validated"'/>
+		<scatter-gather doc:name="Book Package Requests" doc:id="90806c97-5cb2-4377-9555-2934cbbc668f" >
+			<route >
+				<http:request method="POST" doc:name="Book Flight Request" doc:id="e1d5617f-45d6-479b-ba88-9814d6a44445" config-ref="Flights_HTTP_Request_configuration" path="${http.flights.post.api}" target="flightBookingResponse">
+			<error-mapping targetType="FLIGHTS:CONNECTION_ERROR" />
+					<http:body><![CDATA[#[vars.flightDetails]]]></http:body>
+					<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+		</http:request>
+				<logger level="INFO" doc:name="Log Book Flight Request Status" doc:id="814dbe7c-5042-463a-ac0f-2543c4422f9f" message='"Request for book flights completed."'/>
+			</route>
+			<route >
+				<http:request method="POST" doc:name="Book Hotel Request" doc:id="5cdde25e-a61e-4598-a3c0-8baf2c0f9ce1" config-ref="Hotels_HTTP_Request_configuration" path="${https.hotels.post.api}" target="hotelBookingResponse">
+			<error-mapping targetType="HOTELS:CONNECTION_ERROR" />
+					<http:body><![CDATA[#[vars.hotelDetails]]]></http:body>
+					<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+		</http:request>
+				<logger level="INFO" doc:name="Log Book Hotel Request Status" doc:id="7827be0d-f250-4796-a012-1f237d69fa69" message='"Request for book hotels completed."'/>
+			</route>
+			<route >
+				<http:request method="POST" doc:name="Book Source Car Request" doc:id="c1296ee9-024c-4fd7-9f81-cb93d225661d" target="carBookingResponse" config-ref="Car_HTTP_Request_configuration" path="${http.car.post.api}">
+			<error-mapping targetType="CAR:CONNECTION_ERROR" />
+					<http:body><![CDATA[#[vars.carDetails]]]></http:body>
+					<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+		</http:request>
+				<http:request method="POST" doc:name="Book Destination Car Request" doc:id="247e327c-74d0-4594-a461-539916402957" config-ref="Car_HTTP_Request_configuration" path="${http.car.post.api}" target="carBookingReturnTripResponse">
+					<error-mapping targetType="CAR:CONNECTION_ERROR" />
+					<http:body ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+  "partnerId": (payload.packageID splitBy ("-"))[5] as Number,
+  "bookingDetails": {
+    "bookingID": vars.transactionID,
+    "source": payload.carDetails.bookingDetails.destination,
+    "destination": payload.carDetails.bookingDetails.destination as String ++ "-AIRPORT",
+    "date": payload.bookingDate as Date + ("P$(payload.noOfDays)D" as Period) as String,
+    "cabType": payload.carDetails.bookingDetails.cabType
+  } 
+  
+}]]]></http:body>
+					<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+				</http:request>
+				<logger level="INFO" doc:name="Log Book Car Request Status" doc:id="0f0d86c2-2f15-4bc8-8bd8-2879daf4e964" message='"Request for book cars completed."'/>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Create Holiday Booking Response" doc:id="51fef0ae-fe09-4252-a82c-c76a1217cb48" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+bookingDetails: {
+	flight:  {
+		onward: vars.flightBookingResponse, 
+		return: vars.flightBookingResponse ++ {
+				origin: vars.flightBookingResponse.destination,
+				destination: vars.flightBookingResponse.origin,
+				dateOfBooking: vars.flightBookingResponse.dateOfBooking as Date + ("P$(vars.noOfDays)D") as Period as String
+			}
+			
+	},
+	car: {
+		onward: vars.carBookingResponse,
+		return: vars.carBookingReturnTripResponse
+	},
+	hotel: vars.hotelBookingResponse
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<async doc:name="Async" doc:id="80240382-6bed-417b-98af-6fc8f76db0dd" >
+			<os:store doc:name="Store Booking Details" doc:id="36ba9b6c-3799-4919-9927-d63168d23176" key="#[vars.transactionID]" objectStore="Object_store_booking_details" />
+			<logger level="INFO" doc:name="Log Book Package Request Status" doc:id="f5389a6d-ab03-408c-841f-99338904af80" message='"Request for book package flow completed."' />
+		</async>
+	</flow>
+	<sub-flow name="validate-package-sub-flow" doc:id="2f85b092-756b-4be9-ac47-6b41fdcfa206" >
+		<http:request method="GET" doc:name="Get AvailableFlight Seats" doc:id="6874c542-0e65-472c-aa76-0ecce814e070" config-ref="Flights_HTTP_Request_configuration" path="${http.flights.get.api}/{flightID}" target="flightResponseUsingId">
+			<error-mapping sourceType="HTTP:BAD_REQUEST" targetType="FLIGHTS:BAD_REQUEST" />
+			<error-mapping targetType="FLIGHTS:CONNECTION_ERROR" />
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"flightID" : vars.flightID
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"flightName" : "indigo"
+}]]]></http:query-params>
+		</http:request>
+		<validation:is-true doc:id="b97b39c7-5dd0-405f-b4ec-ebe27d0095a3" expression="#[payload.noOfGuests &lt;= vars.flightResponseUsingId.emptySeats]" message='"Flight seats not available in this package."' doc:name="Validate Flight Seats">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="FLIGHTS:NOT_AVAILABLE" />
+		</validation:is-true>
+		<http:request method="GET" doc:name="Get Available Hotel Rooms" doc:id="e6ff8806-f8f1-4fcb-b747-2fe83c547c4f" config-ref="Hotels_HTTP_Request_configuration" path="${https.hotels.get.api}/{hotelID}" target="hotelsResponseUsingId" responseTimeout="500000">
+			
+			<error-mapping sourceType="HTTP:BAD_REQUEST" targetType="HOTELS:BAD_REQUEST" />
+			<error-mapping targetType="HOTELS:CONNECTION_ERROR" />
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"hotelID" : vars.hotelID
+}]]]></http:uri-params>
+		</http:request>
+		<set-variable value='#[%dw 2.0&#10;output application/java&#10;var roomType = (payload.packageID splitBy("-"))[3]&#10;var noOfRoomsRequired = payload.noOfRooms&#10;var acRooms = (vars.hotelsResponseUsingId.roomsAvailable filter((object, index) -&gt; (&#10;	trim(upper(object.roomType)) == "AC"&#10;)))[0]&#10;var nonAcRooms = (vars.hotelsResponseUsingId.roomsAvailable filter((object, index) -&gt; (&#10;	trim(upper(object.roomType)) == "NONAC"&#10;)))[0]&#10;&#10;var noOfRoomsAvailable = &#10;(if (roomType == "AC") &#10;	acRooms.noOfRooms&#10;else&#10;	nonAcRooms.noOfRooms&#10;)as Number&#10;---&#10;if (noOfRoomsRequired &lt;= noOfRoomsAvailable)&#10;true&#10;else&#10;false]' doc:name="isHotelBookingValid" doc:id="790083aa-6ee3-4f34-b8b7-0401b2ba82fc" variableName="isHotelBookingValid"/>
+		<validation:is-true doc:name="Validate Hotel Rooms" doc:id="17de5c27-b0fa-4e27-b361-2cad56dbee92" expression="#[vars.isHotelBookingValid as Boolean]" message='"Hotel rooms not available in this package"'>
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="HOTELS:NOT_AVAILABLE" />
+		</validation:is-true>
+	</sub-flow>
+	</mule>

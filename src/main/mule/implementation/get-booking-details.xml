@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<flow name="get-booking-details-flow" doc:id="66ced4d2-0fb3-485b-9c18-1641d7a780c0" >
+		<os:retrieve doc:name="Retrieve Booking Details" doc:id="32d18faf-5a32-4f16-98e6-5c9135795481" key="#[attributes.queryParams.transactionID]" objectStore="Object_store_booking_details"/>
+
+	</flow>
+	
+	
+	</mule>

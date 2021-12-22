@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="bookmyholiday-proc-api-httpListenerConfig">
+        <http:listener-connection host="${http.host}" port="${http.port}" />
+    </http:listener-config>
+    
+    <http:request-config name="Flights_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="de4b6894-257b-49ad-a6d2-714f0ecda62f">
+		<http:request-connection host="${http.flights.host}" port="${http.flights.port}" />
+	</http:request-config>
+	<http:request-config name="Hotels_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="e2f12002-d912-41fb-b8b6-49f42e335776">
+		<http:request-connection host="${https.hotels.host}" port="${https.hotels.port}" protocol="HTTPS">
+			<tls:context >
+				<tls:trust-store path="certs/client-truststore.jks" insecure="true" password="12345678" type="jks"/>
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="Car_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="6415b0b5-f98e-4332-afb0-9c9890ed8369">
+		<http:request-connection host="${http.car.host}" port="${http.car.port}" />
+	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="b6b83384-414a-49a7-8f7c-24c29075baf1" file="config/${env}-config.yaml" />
+	<global-property doc:name="Global Property" doc:id="5fde7aae-92f6-4e49-b8b5-2ab75e785a53" name="env" value="dev" />
+	<configuration doc:name="Configuration" doc:id="7872fae8-3d5b-4e96-a675-6cbb771b7c51" defaultErrorHandler-ref="globalError_Handler" />
+	<os:config name="ObjectStore_Config" doc:name="ObjectStore Config" doc:id="432a58b3-f514-4bfe-8c28-bb061fa3114f" >
+		<os:connection />
+	</os:config>
+	<os:object-store name="Object_store_booking_details" doc:name="Object store" doc:id="9b736e13-655b-46a7-a62d-3da5e63f59e3" maxEntries="10" entryTtl="5" entryTtlUnit="MINUTES" expirationInterval="30" expirationIntervalUnit="SECONDS" config-ref="ObjectStore_Config" />	
+	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="9a46a403-8c19-42d2-9d91-a112e4a92f2f" keyGenerationExpression="#[vars.source ++ vars.destination ++ vars.flightClass ++ vars.hotelRoomType01 ++ vars.noOfDays as String ++ vars.bookingDate as String ++ vars.noOfGuests as String]">
+		<os:private-object-store maxEntries="10" entryTtl="5" entryTtlUnit="MINUTES" expirationInterval="30" expirationIntervalUnit="SECONDS" config-ref="ObjectStore_Config" alias="hotelDetails"/>
+	</ee:object-store-caching-strategy>
+
+
+</mule>

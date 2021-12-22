@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<error-handler name="globalError_Handler" doc:id="367332fa-6dfe-4c44-9535-440dd61b6822" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b8be309f-3769-40c1-9f37-3dcf3d322c53" type="APP:INVALID_SOURCE, APP:INVALID_DESTINATION, APP:INVALID_DATE">
+			<ee:transform doc:name="Transform Message" doc:id="7945df8d-58e1-4f70-b0d1-83400e7f78ed" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": error.description
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7e522610-2506-4335-bbe4-ce0a963156ff" type="FLIGHTS:NOT_AVAILABLE, HOTELS:NOT_AVAILABLE">
+			<ee:transform doc:name="Transform Message" doc:id="d8d8e206-ebfe-4773-a693-04daa035a9d9" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+import substringBefore, substringAfter from dw::core::Strings
+output application/json
+---
+{
+	"message": substringBefore(("Holiday package not available. " ++ substringAfter((error.description default ""), "\"")),"\"")
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f0413d30-4abf-4f98-a284-387bc03a5a8c" type="FLIGHTS:BAD_REQUEST">
+			<ee:transform doc:name="Transform Message" doc:id="644f5487-9618-489e-92bb-447179aca3e8" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "INVALID PACKAGE: " ++ error.errorMessage.payload
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a968be64-d361-48b0-8654-6427f37eb7b0" type="HOTELS:BAD_REQUEST">
+			<ee:transform doc:name="Transform Message" doc:id="1d42e676-143a-4286-ac36-7cc290c0779e" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "INVALID PACKAGE: " ++ error.errorMessage.payload.message
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ef580807-2f1b-44e4-959c-dab7d50a728d" type="CAR:BAD_REQUEST">
+			<ee:transform doc:name="Transform Message" doc:id="f4fa4e8e-32eb-43b0-aceb-92616dbdafde" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": error.errorMessage.payload
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="99b40cb1-203a-403e-bd9c-ff414909c814" type="HOTELS:CONNECTION_ERROR, FLIGHTS:CONNECTION_ERROR, CAR:CONNECTION_ERROR">
+			<ee:transform doc:name="Transform Message" doc:id="bd6a6328-e638-473d-8746-585c33c01756" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": error.errorMessage.payload
+}
+]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+error.errorMessage.attributes.statusCode]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e7246db4-32bd-432a-b1e4-9f73b5e65011" type="ANY">
+			<ee:transform doc:name="Transform Message" doc:id="455e3f68-cc0b-4f9a-9669-a00a0302d674">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Internal Server Server"
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[%dw 2.0
+output application/json
+---
+500]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+	
+</error-handler>
+	
+	
+</mule>

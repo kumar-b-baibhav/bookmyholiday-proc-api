@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<flow name="get-holiday-package-flow" doc:id="0812f3fb-26a4-4bb4-b59e-a1fa96e83e40">
+		<async doc:name="Async" doc:id="abfd057c-1c33-4866-ade5-c381f95e72ba" >
+			<logger level="INFO" doc:name="Log Request Status" doc:id="6cebad77-276e-4906-8a7a-64bce29c2cd9" message='#["Request for get holiday package started for correlationID: " ++ vars.correlationID]' />
+		</async>
+		<ee:transform doc:name="Set Holiday Variables" doc:id="40ce3f9c-f46a-4570-a787-bed15038e19c">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="source"><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.source]]></ee:set-variable>
+				<ee:set-variable variableName="destination"><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.destination]]></ee:set-variable>
+				<ee:set-variable variableName="bookingDate"><![CDATA[%dw 2.0
+import tomorrow from dw::core::Dates
+output application/java
+---
+attributes.queryParams.Date default (tomorrow() as Date {format:"yyyy-MM-dd"})]]></ee:set-variable>
+				<ee:set-variable variableName="hotelRoomType"><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.hotelRoomType]]></ee:set-variable>
+				<ee:set-variable variableName="noOfGuests"><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.noOfGuests default 1]]></ee:set-variable>
+				<ee:set-variable variableName="noOfDays"><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.noOfDays default 1]]></ee:set-variable>
+				<ee:set-variable variableName="flightClass" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.flightClass default ""]]></ee:set-variable>
+				<ee:set-variable variableName="hotelRoomType01" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.hotelRoomType default ""]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<validation:is-true doc:id="cc21cabc-28be-4e1d-8571-93454a2d85a6" expression="#[['DEL','KOL','MUM','HYD','BAN'] contains vars.source]" message="#['Invalid source location' ++ ' ' ++ (vars.source default ' ')]" doc:name="Validate Source">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:INVALID_SOURCE" />
+		</validation:is-true>
+		<validation:is-true doc:name="Validate Destination" doc:id="0f555149-bbac-4cae-84b7-eb5e2d68455a" expression="#[['DEL','KOL','MUM','HYD','BAN'] contains vars.destination]" message="#['Invalid destination location' ++ ' ' ++ (vars.destination default ' ')]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:INVALID_DESTINATION" />
+		</validation:is-true>
+		<validation:is-true doc:name="Validate Date" doc:id="cbedd4eb-cb8d-4449-aa10-20f9083f0331" expression='#[vars.bookingDate as Date {format:"yyyy-MM-dd"} &gt;= (now() as Date {format:"yyyy-MM-dd"})]' message="#['Invalid bookingDate. Booking date cannot be in past.' ++ ' ' ++ (vars.bookingDate default ' ')]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:INVALID_DATE" />
+		</validation:is-true>
+		<ee:cache doc:name="Cache" doc:id="72ec2604-fbb9-486c-9a5f-964a79abd7fc" cachingStrategy-ref="Caching_Strategy">
+			<flow-ref doc:name="Get Hotels Request" doc:id="8f53d199-51ef-4453-98f2-b0fca742804b" name="get-hotels-request-flow" />
+			<flow-ref doc:name="Get Flights Request" doc:id="e7eb2234-dccd-4382-9bc4-52d2933ef985" name="get-flights-request-flow" />
+			<flow-ref doc:name="GetCar Request" doc:id="0819a201-8d88-4a4a-abb2-a10b201feb60" name="get-car-request-flow" />
+			<ee:transform doc:name="Create Holiday Package Response" doc:id="80106422-c2a9-4d1f-9424-fe22684b24dd">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var flights=vars.flights.flights
+var hotels=vars.hotels
+---
+flatten(flatten(flights map ((item01) -> hotels map ((item02) -> item02.roomsAvailable map (item03) -> {
+    "packageID": "BMH-"++ item01.ID ++ "-" ++ item02.hotelID ++"-" ++ item03.roomType ++ "-" ++ vars.pickUpCab.partnerId ++ "-" ++ vars.dropOffCab.partnerId,
+    "packageCost": (item01.price as Number)*2 + item03.roomPrice*(((vars.noOfGuests as Number)/2) as String {format:"0"} as Number) + vars.pickUpCab.fare + vars.dropOffCab.fare,
+    "source": vars.source,
+    "destination": vars.destination,
+    "onwardFlightDetails": {
+        "price": item01.price,
+        "departureDay": item01.departureDay,
+        "departureTime": item01.departureTime,
+        "emptySeats": item01.emptySeats
+    },
+    "returnFlightDetails": {
+        "price": item01.price,
+        "departureDay": item01.departureDay,
+        "departureTime": item01.departureTime,
+        "emptySeats": item01.emptySeats
+    },
+	"hotelDetails": {
+        "hotelName": item02.hotelName,
+        "roomType": item03.roomType,
+        "roomPrice": item03.roomPrice as Number,
+        "noOfRooms": item03.noOfRooms as Number
+    },
+    "sourceCabDetails":{
+        "cabName": vars.pickUpCab.partnerName,
+        "price": vars.pickUpCab.fare
+    },
+    "destinationCabDetails":{
+        "cabName": vars.dropOffCab.partnerName,
+        "price": vars.dropOffCab.fare
+    }
+})))) filter (if(vars.hotelRoomType != null) $.hotelDetails.roomType == vars.hotelRoomType 
+else ($.hotelDetails.roomType default "")contains "")
+filter (if(vars.noOfGuests != null) $.hotelDetails.noOfRooms >= (((vars.noOfGuests as Number)/2) as String {format:"0"} as Number) 
+else ($.hotelDetails.noOfRooms default 0) == 0)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		</ee:cache>
+		<async doc:name="Async" doc:id="09d98a58-aa78-4682-b465-ac221555edc9" >
+			<logger level="INFO" doc:name="Log Request Status" doc:id="2f9313b4-6990-4a03-9943-07ea71205c30" message='#["Request for get holiday package successfully completed for correlationID: " ++ vars.correlationID]' />
+		</async>
+	</flow>
+	<flow name="get-flights-request-flow" doc:id="e3868d26-eac7-430c-a634-8e8cc388f98a">
+		<http:request method="GET" doc:name="Get Flights Request" doc:id="fd70f659-ac62-448d-a568-a5fb620b018d" config-ref="Flights_HTTP_Request_configuration" path="${http.flights.get.api}" target="flights">
+						<error-mapping targetType="FLIGHTS:CONNECTION_ERROR" />
+						<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"flightName": "indigo",
+	"source" : vars.source,
+	"destination" : vars.destination,
+	"day" : "MON" //upper(vars.bookingDate as String {format: "ccc"})
+}]]]></http:query-params>
+				</http:request>
+		<choice doc:name="Check if flights are available" doc:id="149386be-cf5e-475b-9880-7f3440097911">
+			<when expression="#[isEmpty(vars.flights.flights)]">
+				<raise-error doc:name="Raise error if flights not available" doc:id="943b0346-fbbe-4105-a005-1665744df2c0" type="FLIGHTS:NOT_AVAILABLE" description='"No flights available for selected destination from source location."' />
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Log Flights Request Status" doc:id="b63d12c3-52e5-4da6-9300-8a14df6d356e" message='#["Request for get flights request completed for correlationID: " ++ vars.correlationID]'/>
+			</otherwise>
+		</choice>
+	</flow>
+	<flow name="get-hotels-request-flow" doc:id="009de667-7862-4a30-a1dc-9e5188a628ab" >
+		<http:request method="GET" doc:name="Get Hotels Request" doc:id="968266ca-6402-4014-b18e-ac691d23a218" config-ref="Hotels_HTTP_Request_configuration" path="${https.hotels.get.api}" target="hotels" responseTimeout="500000">
+					<error-mapping targetType="HOTELS:CONNECTION_ERROR" />
+						<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"hotelPartner": "Taj Hotel",
+	"location" : vars.destination,
+	("roomType": vars.hotelRoomType) if (vars.hotelRoomType != null),
+	("noOfRooms": ((vars.noOfGuests as Number)/2) as String {format:"0"} as Number)  if (vars.noOfGuests != null)
+}]]]></http:query-params>
+				</http:request>
+		<choice doc:name="Check if hotels are available" doc:id="896c2065-0743-429c-b9f1-877e99883558" >
+			<when expression="#[isEmpty(vars.hotels)]">
+				<raise-error doc:name="Raise error if hotels not available" doc:id="1f684586-504b-47db-b7da-b10b90299ee5" type="HOTELS:NOT_AVAILABLE" description='"No hotels available for selected destination."' />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Log Hotels Request Status" doc:id="9b00eca6-b1f2-454c-8f0f-31d7da8d243c" message='#["Request for get hotels request completed for correlationID: " ++ vars.correlationID]'/>
+			</otherwise>
+		</choice>
+	</flow>
+	<flow name="get-car-request-flow" doc:id="13578b34-0395-47a1-9a53-c18b30dd9020">
+		<http:request method="GET" doc:name="Get Source Cab Request" doc:id="e845bdff-b337-4725-ae57-b83617b8ad73" config-ref="Car_HTTP_Request_configuration" path="${http.car.get.api}" target="pickUpCab">
+											<error-mapping sourceType="HTTP:BAD_REQUEST" targetType="CAR:BAD_REQUEST" />
+					<error-mapping targetType="CAR:CONNECTION_ERROR" />
+
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"location" : vars.source
+}]]]></http:query-params>
+				</http:request>
+		<http:request method="GET" doc:name="Get Destination Cab Request" doc:id="5228f7c0-af37-4fd4-a9f4-bfe2848b3396" config-ref="Car_HTTP_Request_configuration" path="${http.car.get.api}" target="dropOffCab">
+												<error-mapping sourceType="HTTP:BAD_REQUEST" targetType="CAR:BAD_REQUEST" />
+						<error-mapping targetType="CAR:CONNECTION_ERROR" />
+						<http:headers ><![CDATA[#[output application/java
+---
+{
+	"correlationID" : vars.correlationID
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"location" : vars.destination
+}]]]></http:query-params>
+					</http:request>
+		<logger level="INFO" doc:name="Log Car Request Status" doc:id="79bd9130-0a6e-43d1-9827-023d018b97d8" message='#["Request for get car request completed for correlationID: " ++ vars.correlationID]'/>
+	</flow>
+</mule>

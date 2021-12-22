@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="searchPackageImplementation-suite.xml" />
+	<munit:test name="get-holiday-package-test" doc:id="82b1c8f0-01be-44d7-9089-92142fd18a42">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getFlightsRequest" doc:id="07c88796-c201-4112-9dd8-e20c431d1a09" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="e7eb2234-dccd-4382-9bc4-52d2933ef985" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="source" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="destination" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="noOfDays" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock getCarRequest" doc:id="7bf6c02f-eee9-49c4-a968-a9a2b3c90d46" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="0819a201-8d88-4a4a-abb2-a10b201feb60" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="dropOffCab" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_9.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_12.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="pickUpCab" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_13.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="source" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_14.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="destination" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_15.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_16.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_17.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="noOfDays" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_18.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock getHotelsRequest" doc:id="db7a1d33-6afc-412a-881d-03de9576a7fa" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="8f53d199-51ef-4453-98f2-b0fca742804b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_21.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_22.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="source" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_23.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="destination" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_24.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_25.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_26.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="noOfDays" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_27.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="804ede2b-120c-42ee-921a-032e281b17fd">
+				<munit:attributes value="#[readUrl('classpath://getholidaypackagetest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to GET\holiday-package" doc:id="4475f5ce-0a4b-431a-b3d2-32d8b5251726" name="get-holiday-package-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="e382bfee-03cf-4fcc-b342-3b7945a10cd8" processor="logger" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="6cebad77-276e-4906-8a7a-64bce29c2cd9" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is Valid Destination" doc:id="239237b2-785d-4627-90d4-7f2d28a3ef2d" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="0f555149-bbac-4cae-84b7-eb5e2d68455a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is Valid Source" doc:id="06dae186-255e-465e-9b62-2fb1acb49e04" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="cc21cabc-28be-4e1d-8571-93454a2d85a6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is Valid Date" doc:id="0a3ec000-1672-48d9-883e-c62336c4d99e" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="cbedd4eb-cb8d-4449-aa10-20f9083f0331" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="296d7a2f-d206-441b-8b70-680da903178b" processor="logger" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="2f9313b4-6990-4a03-9943-07ea71205c30" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set Holiday Variables" doc:id="4bce7058-ae05-4625-a21f-ea8336d0b516" processor="ee:transform" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="40ce3f9c-f46a-4570-a787-bed15038e19c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Holiday Package Response" doc:id="1d505bf7-5b1e-4d58-bdbf-ad2feaa0acf9" processor="ee:transform" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="80106422-c2a9-4d1f-9424-fe22684b24dd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert doc:name="Assert payload" doc:id="75271c99-6f00-4d62-ac42-d61c57cc1b16" message="The payload does not match">
+				<munit-tools:that><![CDATA[#[%dw 2.0
+import getholidaypackagetest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-flights-request-unit-test-success" doc:id="b5c8908d-94ef-45c4-b2d6-dbb79e153112">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getFlightsRequest" doc:id="4edff22c-3d3f-4668-aa29-43aff810ca70" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="fd70f659-ac62-448d-a568-a5fb620b018d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getFlightsRequestFlowtest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="9a2331f6-38f7-4954-bdb8-f696fe69b747">
+				<munit:variables >
+					<munit:variable key="source" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="correlationID" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to getFlightsRequestFlow" doc:id="acd35b87-926c-466a-aa85-0f36fc43c29e" name="get-flights-request-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert doc:name="Assert variables" doc:id="237d532d-039b-4c4f-83a2-ec14b3f252a3" message="The variables do not match">
+				<munit-tools:that><![CDATA[#[%dw 2.0
+import getFlightsRequestFlowtest::assert_expression_variables
+---
+assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="9a378454-e207-412e-a9ad-06622fde4d86" processor="logger" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="b63d12c3-52e5-4da6-9300-8a14df6d356e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+	<munit:test name="get-flights-request-unit-test-failure" doc:id="5e933589-cf8a-4711-90b8-cda56627df9a" expectedErrorType="FLIGHTS:NOT_AVAILABLE">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getFlightsRequest" doc:id="22ef5f8f-ee6c-4f04-964a-21d0fc1225fc" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="fd70f659-ac62-448d-a568-a5fb620b018d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getFlightsRequestFlowtest\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		
+</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="c865af25-0547-4d62-a87f-d618961ab787">
+				<munit:variables >
+					<munit:variable key="source" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to getFlightsRequestFlow" doc:id="bb4199aa-b8f5-4e90-b07c-58745c74e7a9" name="get-flights-request-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert doc:name="Assert variables" doc:id="7cd57270-d539-4290-958f-d600728bc6de" message="The variables do not match">
+				<munit-tools:that><![CDATA[#[%dw 2.0
+import getFlightsRequestFlowtest::assert_expression_variables
+---
+assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="2a28abda-45d7-4bb9-b19c-313bea39f689" processor="logger" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="b63d12c3-52e5-4da6-9300-8a14df6d356e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+	<munit:test name="get-flights-request-unit-test-failure-2" doc:id="c8ceb6cd-63a0-4f63-aaa6-7c5ce041e4a2" expectedErrorType="FLIGHTS:BAD_REQUEST">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getFlightsRequest" doc:id="99dad9bf-7815-4e17-ab5a-6d255a1189b2" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="fd70f659-ac62-448d-a568-a5fb620b018d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="FLIGHTS:BAD_REQUEST" />
+				</munit-tools:then-return>
+			
+
+</munit-tools:mock-when>
+		
+</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="3e6a1f93-3517-4589-a3ad-ebe5902cc818">
+				<munit:variables >
+					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getFlightsRequestFlowtest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to getFlightsRequestFlow" doc:id="e91df32d-9955-4ca3-b1b1-82bc5275e849" name="get-flights-request-flow" />
+		</munit:execution>
+	</munit:test>
+
+
+	
+	<munit:test name="get-car-request-unit-test" doc:id="f8f95877-ec99-4b02-8e13-0a1ee173f43d">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getSourceCabRequest" doc:id="71be4c0f-c9de-4339-bfb5-0c3a6b53fcca" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="e845bdff-b337-4725-ae57-b83617b8ad73" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="pickUpCab" value="#[output application/json --- readUrl('classpath://getCarRequesttest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock getDestinationCabRequest" doc:id="b3d7b5d0-9aad-42c5-8754-648bace9f75a" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="5228f7c0-af37-4fd4-a9f4-bfe2848b3396" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="dropOffCab" value="#[output application/json --- readUrl('classpath://getCarRequesttest\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="226c2fa1-09dd-4026-a06a-fd38651ef073">
+				<munit:variables >
+					<munit:variable key="source" value="#[output application/java --- readUrl('classpath://getCarRequesttest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getCarRequesttest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="correlationID" value="#[output application/java --- readUrl('classpath://getCarRequesttest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to getCarRequest" doc:id="dfc3ea0d-4132-49f3-83c6-6b94801cac94" name="get-car-request-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="b4c65398-08d0-42a6-a9d8-838c7be3d968" processor="http:request" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="e845bdff-b337-4725-ae57-b83617b8ad73" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="fd8e0838-c65e-4261-948b-aef051efdeb7" processor="http:request" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="5228f7c0-af37-4fd4-a9f4-bfe2848b3396" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert doc:name="Assert variables" doc:id="91839b6c-4806-4632-960d-e5c904f18f02" message="The variables do not match">
+				<munit-tools:that><![CDATA[#[%dw 2.0
+import getCarRequesttest::assert_expression_variables
+---
+assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	
+	<munit:test name="get-car-request-unit-test-failure" doc:id="ddd638df-d6c6-4409-88ae-0fb4b14013b8" expectedErrorType="CAR:BAD_REQUEST">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getSourceCabRequest" doc:id="d315d548-b284-468d-ab50-b0f069b640f4" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="e845bdff-b337-4725-ae57-b83617b8ad73" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="CAR_BAD_REQUEST" />
+					<munit-tools:variables >
+						<munit-tools:variable key="pickUpCab" value="#[output application/json --- readUrl('classpath://getCarRequesttest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="0cbc9d66-9e3b-4061-81f1-9d760aeb9e7e">
+				<munit:variables >
+					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getCarRequesttest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="correlationID" value="#[output application/java --- readUrl('classpath://getCarRequesttest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to getCarRequest" doc:id="6252246b-9637-487f-8450-6fa6ef6af59e" name="get-car-request-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="94337cf1-f966-4bf7-9570-78304db926b7" processor="http:request" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="e845bdff-b337-4725-ae57-b83617b8ad73" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+	
+	<munit:test name="get-hotels-request-unit-test-success" doc:id="ceeb38e4-0901-4983-aa14-04a73f9cee52">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getHotelsRequest" doc:id="e518886e-1f87-4935-9515-5b7aff57c1d7" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="968266ca-6402-4014-b18e-ac691d23a218" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getHotelsRequesttest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="ccd82220-fae1-4ad2-b90d-2f1b0b91cb3f">
+				<munit:variables >
+					<munit:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="correlationID" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to getHotelsRequest" doc:id="55ee4fd4-579d-4efb-b6a7-d3ccbb644ed1" name="get-hotels-request-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert doc:name="Assert variables" doc:id="37df583b-490e-4713-be62-32489a6f33cf" message="The variables do not match">
+				<munit-tools:that><![CDATA[#[%dw 2.0
+import getHotelsRequesttest::assert_expression_variables
+---
+assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="1b44e179-a39f-4b6b-83f8-fcb1b926c7eb" processor="logger" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="9b00eca6-b1f2-454c-8f0f-31d7da8d243c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+		<munit:test name="get-hotels-request-unit-test-failure" doc:id="04deab64-7f49-4d34-8eee-eeda3d1fbfbd" description="Test" expectedErrorType="HOTELS:NOT_AVAILABLE">
+				<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getHotelsRequest" doc:id="63c77517-5d1c-4190-a8b9-7acddcca2709" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="968266ca-6402-4014-b18e-ac691d23a218" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getHotelsRequesttest\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Raise Error" doc:id="da048062-a5c0-414a-8059-37b765df8f29" processor="raise-error">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="943b0346-fbbe-4105-a005-1665744df2c0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HOTELS:NOT_AVAILABLE" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		
+</munit:behavior>
+		
+		<munit:execution >
+			<munit:set-event doc:name="Set Input" doc:id="331aae94-49fc-4563-aced-cbf44bdfa1a0">
+				<munit:variables>
+					<munit:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get-hotels-request-flow" doc:id="e187fed0-0ca2-44cb-926a-4c8f1ef57c9f" name="get-hotels-request-flow" />
+		
+		
+</munit:execution>
+		<munit:validation>
+
+			<munit-tools:assert doc:name="Assert variables" doc:id="fc0318bf-2491-4579-896a-e1ee972e215f" message="The variables do not match">
+				<munit-tools:that><![CDATA[#[%dw 2.0
+import getHotelsRequesttest::assert_expression_variables_1
+---
+assert_expression_variables_1::main({vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Raise Error" doc:id="abe549fb-fbe7-40f5-b926-fe02af24b4bb" processor="raise-error" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1f684586-504b-47db-b7da-b10b90299ee5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		
+</munit:validation>
+		
+	</munit:test>
+	
+			<munit:test name="get-hotels-request-unit-test-failure-2" doc:id="86e0737a-c4a9-4871-b684-5a23218a3aec" description="Test" expectedErrorType="HOTELS:BAD_REQUEST">
+				<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock getHotelsRequest" doc:id="15d3bee3-32c6-4241-b018-a71734bfb68e" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="968266ca-6402-4014-b18e-ac691d23a218" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HOTELS:BAD_REQUEST" />
+					<munit-tools:variables >
+						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getHotelsRequesttest\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+
+</munit-tools:mock-when>
+		
+</munit:behavior>
+		
+		<munit:execution >
+			<munit:set-event doc:name="Set Input" doc:id="3dedfcb3-c02d-4e4f-9cc3-45c4cf2b98f3">
+					<munit:variables>
+						<munit:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+						<munit:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getHotelsRequesttest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
+					</munit:variables>
+
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get-hotels-request-flow" doc:id="5ad1670b-4356-4003-88fc-67437f9d86f5" name="get-hotels-request-flow" />
+		
+		
+</munit:execution>
+		
+	</munit:test>
+	
+
+</mule>

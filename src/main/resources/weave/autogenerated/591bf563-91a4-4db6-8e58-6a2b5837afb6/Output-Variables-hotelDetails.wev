@@ -1,0 +1,13 @@
+%dw 2.0
+
+type auto_591bf563_91a4_4db6_8e58_6a2b5837afb6_Output_Variables_hotelDetails = {|
+  hotelID: Any, 
+  transactionID: String, 
+  guestName: Any, 
+  guestPhone: Any, 
+  noOfDays: Any, 
+  bookingDate: Any, 
+  roomType: Any, 
+  noOfRooms: Any
+|}
+

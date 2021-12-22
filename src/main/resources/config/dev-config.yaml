@@ -1,0 +1,25 @@
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  flights:
+    host: "book-my-holidays-flights.us-e2.cloudhub.io"
+    port: "80"
+    post:
+      api: "/api/flights/book"
+    get:
+      api: "/api/flights"
+  car:
+    host: "book-my-holidays-car-sys-api.us-e2.cloudhub.io"
+    port: "80"
+    post: 
+      api: "/api/car/book"
+    get:
+      api: "/api/car"
+https:  
+  hotels:
+    host: "bookmyholiday-hotels-sys-api.us-e2.cloudhub.io"
+    port: "443"
+    post: 
+      api: "/api/hotels/booking"
+    get:
+      api: "/api/hotels"

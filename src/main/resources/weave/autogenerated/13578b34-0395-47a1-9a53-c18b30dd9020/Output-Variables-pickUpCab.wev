@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_13578b34_0395_47a1_9a53_c18b30dd9020_Output_Variables_pickUpCab = Any
+

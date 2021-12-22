@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_e3868d26_eac7_430c_a634_8e8cc388f98a_Input_Variables_noOfDays = String | Null
+

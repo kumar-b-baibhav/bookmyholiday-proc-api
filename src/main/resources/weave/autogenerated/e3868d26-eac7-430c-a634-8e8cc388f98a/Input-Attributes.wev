@@ -1,0 +1,31 @@
+%dw 2.0
+
+type auto_e3868d26_eac7_430c_a634_8e8cc388f98a_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    source: String, 
+    destination: String, 
+    flightClass?: "Economy" | "Business", 
+    hotelRoomType?: "AC" | "NONAC", 
+    noOfGuests?: Number, 
+    noOfDays?: String, 
+    Date?: String
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+

@@ -1,0 +1,22 @@
+%dw 2.0
+
+type auto_0812f3fb_26a4_4bb4_b59e_a1fa96e83e40_Input_Payload = {
+  hotelDetails: {
+    roomPrice: String, 
+    noOfRooms: String, 
+    hotelName: String, 
+    roomType: String, 
+    _?: Any
+  }, 
+  flightDetails: {
+    departureTime: String, 
+    price: String, 
+    departureDay: Array<Any>, 
+    emptySeats: Number, 
+    _?: Any
+  }, 
+  packageCost: String, 
+  packageID: String, 
+  _?: Any
+}
+

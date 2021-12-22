@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="bookPackage-suite.xml" />
+	<munit:test name="validate-package-unit-test" doc:id="5de4264f-cd52-4afb-bd9a-61a4b8076ca6" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Request to flights API" doc:id="0724d871-ba97-479a-b01c-fb948cd26845" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="6874c542-0e65-472c-aa76-0ecce814e070" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="flightResponseUsingId" value="#[output application/json --- readUrl('classpath://validatePackagetest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Request to hotels API" doc:id="a890466d-db72-42c1-a4f9-25330df055b1" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e6ff8806-f8f1-4fcb-b747-2fe83c547c4f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="hotelsResponseUsingId" value="#[output application/json --- readUrl('classpath://validatePackagetest\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Input" doc:id="317cb1a8-9ed5-4c69-bedb-4b53b98ab83e">
+				<munit:payload value="#[output application/json --- readUrl('classpath://validatePackagetest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:variables >
+					<munit:variable key="carDetails" value="#[output application/json --- readUrl('classpath://validatePackagetest\set-event_variable_.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="hotelDetails" value="#[output application/json --- readUrl('classpath://validatePackagetest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://validatePackagetest\set-event_variable_2.dwl')]" />
+					<munit:variable key="flightDetails" value="#[output application/json --- readUrl('classpath://validatePackagetest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="flightID" value="#[output application/json --- readUrl('classpath://validatePackagetest\set-event_variable_4.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="hotelID" value="#[output application/json --- readUrl('classpath://validatePackagetest\set-event_variable_5.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="noOfDays" value="#[output application/json --- readUrl('classpath://validatePackagetest\set-event_variable_6.dwl')]" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="transactionID" value="#[output application/java --- readUrl('classpath://validatePackagetest\set-event_variable_7.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to validatePackage" doc:id="ca45ebf1-0239-4ad9-8b57-de3f2f557b91" name="validate-package-sub-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="6ffd93ea-ae2b-4196-b46f-3aa37c395a34" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import validatePackagetest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:assert doc:name="Assert variables" doc:id="3a5eaae7-e1aa-4b85-b531-56857c7696b3" message="The variables do not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import validatePackagetest::assert_expression_variables
+---
+assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Is Flight Seats Available" doc:id="30f45262-58a4-4875-bc0e-179bc8fbfca9" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b97b39c7-5dd0-405f-b4ec-ebe27d0095a3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify isHotelBookingValid" doc:id="b40449ab-a6ce-49e7-9d01-6d7729923edb" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="790083aa-6ee3-4f34-b8b7-0401b2ba82fc" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is Hotel Rooms Available" doc:id="22df1901-d7ef-4ab7-bc5d-1f70df171bb9" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="17de5c27-b0fa-4e27-b361-2cad56dbee92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="holiday-booking-unit-test" doc:id="dbd57282-d357-46cd-9488-776971f40e80" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock validatePackage" doc:id="8e3304ae-2c3b-4752-a833-0b9979c66e5d" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7ef5cbf7-deb7-481b-b85c-8c34d7f346ba" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Request to flights API" doc:id="054981e9-6c71-427f-9fae-cc85cd81b14a" processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="e1d5617f-45d6-479b-ba88-9814d6a44445" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="flightBookingResponse" value="#[output application/json --- readUrl('classpath://holidaybookingtest\mock_variable_37.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Request to hotels API" doc:id="287076ad-c49a-4cf9-b234-05c60af619ed" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5cdde25e-a61e-4598-a3c0-8baf2c0f9ce1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="hotelBookingResponse" value="#[output application/json --- readUrl('classpath://holidaybookingtest\mock_variable_8.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Request to cars API for onward" doc:id="e1f825d5-6a51-47bf-ab71-d52b8eafe857" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c1296ee9-024c-4fd7-9f81-cb93d225661d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="carBookingResponse" value="#[output application/json --- readUrl('classpath://holidaybookingtest\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Request to cars API for return" doc:id="a93463a0-8432-494f-9df9-e590a03e7c7d" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="247e327c-74d0-4594-a461-539916402957" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="carBookingReturnTripResponse" value="#[output application/json --- readUrl('classpath://holidaybookingtest\mock_variable_35.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Input" doc:id="7b74750b-e2c1-4235-a18e-bf9dba6004df">
+				<munit:payload value="#[output application/json --- readUrl('classpath://holidaybookingtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to holiday-booking" doc:id="ca33606a-2667-4454-a0ce-2ddac29d4974" name="holiday-booking-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify validatePackage" doc:id="f25b8e3b-5499-4fb4-890d-2fc68e251747" processor="flow-ref" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7ef5cbf7-deb7-481b-b85c-8c34d7f346ba" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify noOfDays" doc:id="fc957dc8-dc4c-43b2-a5d4-0a6fe0f4c8b9" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="542704ef-179f-4dcd-853b-afa798511c1b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Store" doc:id="989e6fed-5069-4307-89a3-9d1dfb7814ed" processor="os:store" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="36ba9b6c-3799-4919-9927-d63168d23176" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify transactionID" doc:id="0abc2777-8826-4233-afd9-b49285df53bc" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="9ed2f313-4190-4364-8d2d-0dcd383d1f48" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify hotelID" doc:id="c69e923e-16fd-4d5d-a919-71cb17c70d45" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="757e0cff-e4a0-41d7-8069-a6297fb30e16" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify flightID" doc:id="965248df-298f-4ee5-bdbb-bde7814288e4" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="155a1e94-ab47-40da-b9ad-d6425fd9cf46" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify createRequests" doc:id="4a575cbc-06ec-41fe-8b7e-e838194da733" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c4acff78-aa05-4e27-a3ca-f675772c5795" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify createResponse" doc:id="61185fde-c820-40f4-b801-4b137debf782" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="51fef0ae-fe09-4252-a82c-c76a1217cb48" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
