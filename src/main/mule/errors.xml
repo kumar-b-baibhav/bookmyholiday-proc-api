@@ -6,7 +6,7 @@
 	xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	<error-handler name="globalError_Handler" doc:id="367332fa-6dfe-4c44-9535-440dd61b6822" >
-		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b8be309f-3769-40c1-9f37-3dcf3d322c53" type="APP:INVALID_SOURCE, APP:INVALID_DESTINATION, APP:INVALID_DATE">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="b8be309f-3769-40c1-9f37-3dcf3d322c53" type="APP:INVALID_SOURCE, APP:INVALID_DESTINATION, APP:INVALID_DATE, APP:PACKAGE_ID">
 			<ee:transform doc:name="Transform Message" doc:id="7945df8d-58e1-4f70-b0d1-83400e7f78ed" >
 				<ee:message >
 					<ee:set-payload ><![CDATA[%dw 2.0
@@ -23,7 +23,7 @@ output application/json
 400]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-		</on-error-continue>
+		</on-error-propagate>
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7e522610-2506-4335-bbe4-ce0a963156ff" type="FLIGHTS:NOT_AVAILABLE, HOTELS:NOT_AVAILABLE">
 			<ee:transform doc:name="Transform Message" doc:id="d8d8e206-ebfe-4773-a693-04daa035a9d9" >
 				<ee:message >
@@ -104,7 +104,7 @@ output application/json
 output application/json
 ---
 {
-	"message": error.errorMessage.payload
+	"message": "Packages currently not available. Please Try later." ++ error.errorMessage.payload.message default ""
 }
 ]]></ee:set-payload>
 				</ee:message>
@@ -117,7 +117,25 @@ error.errorMessage.attributes.statusCode]]></ee:set-variable>
 			</ee:transform>
 
 		</on-error-propagate>
-		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e7246db4-32bd-432a-b1e4-9f73b5e65011" type="ANY">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e7246db4-32bd-432a-b1e4-9f73b5e65011" type="OS:KEY_NOT_FOUND">
+			<ee:transform doc:name="Transform Message" doc:id="cef6c157-c9a7-403c-ad8d-004a2d1f3c6b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Booking ID not available in system. Please check booking ID and try again."
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ef3c56a7-b356-4cb5-9139-0ea9f3d716c0" type="ANY">
 			<ee:transform doc:name="Transform Message" doc:id="455e3f68-cc0b-4f9a-9669-a00a0302d674">
 				<ee:message>
 					<ee:set-payload><![CDATA[%dw 2.0

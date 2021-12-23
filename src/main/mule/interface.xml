@@ -19,7 +19,10 @@
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-error.description]]></ee:set-payload>
+{
+	"message": error.description
+}
+]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>

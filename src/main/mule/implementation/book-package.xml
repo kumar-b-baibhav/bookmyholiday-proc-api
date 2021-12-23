@@ -11,6 +11,9 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<async doc:name="Async" doc:id="57cb4acc-9f7d-41c6-aad7-e06f4940be80" >
 			<logger level="INFO" doc:name="Log Book Package Request Status" doc:id="76ec0488-ec7b-4dbe-bcde-fa180125cd7a" message='"Request for book package flow started."' />
 		</async>
+		<validation:is-true doc:name="Is Valid Package ID" doc:id="6a6f8dab-9a1f-43c4-bb8b-60f711c7cf1e" expression='#[sizeOf((payload.packageID splitBy ("-"))) == 6]' message='Invalid Package ID. Please check package ID and try again.'>
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:PACKAGE_ID" />
+		</validation:is-true>
 		<set-variable value='#[(payload.packageID splitBy ("-"))[1]]' doc:name="flightID" doc:id="155a1e94-ab47-40da-b9ad-d6425fd9cf46" variableName="flightID"/>
 		<set-variable value='#[(payload.packageID splitBy("-"))[2]]' doc:name="hotelID" doc:id="757e0cff-e4a0-41d7-8069-a6297fb30e16" variableName="hotelID"/>
 		<set-variable value="#[uuid()]" doc:name="transactionID" doc:id="9ed2f313-4190-4364-8d2d-0dcd383d1f48" variableName="transactionID"/>
@@ -28,8 +31,8 @@ payload]]></ee:set-payload>
 output application/json
 ---
 {
-	"flightID": vars.flightID,
-	"bookingId": vars.transactionID,
+	"flightID": vars.flightID as Number,
+	"bookingID": vars.transactionID,
 	"no_of_seats": payload.noOfGuests,
 	"dateOfBooking": payload.bookingDate
 }]]></ee:set-variable>

@@ -14,7 +14,8 @@
   "scheme": "http",
   "queryParams": {
     "source": "DEL",
-    "destination": "KOL"
+    "destination": "KOL",
+    "Date": "2021-12-20"
   },
   "requestUri": "/api/holiday-package?source=DEL&destination=KOL",
   "queryString": "source=DEL&destination=KOL",

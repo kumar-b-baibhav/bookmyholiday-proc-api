@@ -17,13 +17,7 @@
 
 				<munit-tools:then-return>
 					<munit-tools:variables>
-						<munit-tools:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="source" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="destination" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
-						<munit-tools:variable key="noOfDays" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
 					</munit-tools:variables>
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
@@ -33,16 +27,8 @@
 				</munit-tools:with-attributes>
 				<munit-tools:then-return>
 					<munit-tools:variables>
-						<munit-tools:variable key="dropOffCab" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_9.dwl')]" mediaType="application/json" encoding="UTF-8" />
-						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
-						<munit-tools:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_12.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="pickUpCab" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_13.dwl')]" mediaType="application/json" encoding="UTF-8" />
-						<munit-tools:variable key="source" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_14.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="destination" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_15.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_16.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_17.dwl')]" mediaType="application/json" encoding="UTF-8" />
-						<munit-tools:variable key="noOfDays" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_18.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="dropOffCab" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="pickUpCab" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
 					</munit-tools:variables>
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
@@ -52,14 +38,7 @@
 				</munit-tools:with-attributes>
 				<munit-tools:then-return>
 					<munit-tools:variables>
-						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
-						<munit-tools:variable key="hotelRoomType" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_21.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="noOfGuests" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_22.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="source" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_23.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="destination" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_24.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="bookingDate" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_25.dwl')]" mediaType="application/java" encoding="UTF-8" />
-						<munit-tools:variable key="flights" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_26.dwl')]" mediaType="application/json" encoding="UTF-8" />
-						<munit-tools:variable key="noOfDays" value="#[output application/java --- readUrl('classpath://getholidaypackagetest\mock_variable_27.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getholidaypackagetest\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
 					</munit-tools:variables>
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
@@ -114,6 +93,97 @@ assert_expression_payload::main({payload: payload})]]]></munit-tools:that>
 			</munit-tools:assert>
 		</munit:validation>
 	</munit:test>
+	
+	<munit:test name="get-holiday-package-test-failure-1" doc:id="3dbb2618-8f36-4ef1-b4aa-c2e4e103bde0" expectedErrorType="APP:INVALID_SOURCE">
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="2725297f-fb2b-4b50-91f3-d1164472c1a7">
+				<munit:attributes value="#[readUrl('classpath://getholidaypackagetest\set-event_attributes_1.dwl')]" />
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to GET\holiday-package" doc:id="1feaf3f4-c30e-4f90-bd15-8221ae3dc5c7" name="get-holiday-package-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify Is Valid Source" doc:id="80e281ab-9a4b-4bf7-be24-e58aed76c633" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="cc21cabc-28be-4e1d-8571-93454a2d85a6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set Holiday Variables" doc:id="1410da2c-09c9-4b19-8de4-1a22e8eb4ba3" processor="ee:transform" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="40ce3f9c-f46a-4570-a787-bed15038e19c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-equals doc:name="Payload" doc:id="e018b723-c359-4337-b66b-100ab84f9428" actual="#[payload]" expected="#['Invalid source location' ++ ' ' ++ (vars.source default ' ')]"/>
+		
+</munit:validation>
+	</munit:test>
+
+	<munit:test name="get-holiday-package-test-failure-2" doc:id="25eaaf64-f22d-472e-9832-1519413d9c2d" expectedErrorType="APP:INVALID_DESTINATION">
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="b773ca0f-59ac-4292-80a1-64375584efdc">
+				<munit:attributes value="#[readUrl('classpath://getholidaypackagetest\set-event_attributes_2.dwl')]" />
+
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to GET\holiday-package" doc:id="a050bf8c-8667-4478-b76f-bb1b99547ab0" name="get-holiday-package-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify Is Valid Source" doc:id="c60d2f03-7cce-4a92-8d2a-10ac57fbb110" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="cc21cabc-28be-4e1d-8571-93454a2d85a6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is Valid Destination" doc:id="cac58472-597e-4e77-a2ab-66fc0e095345" processor="validation:is-true">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0f555149-bbac-4cae-84b7-eb5e2d68455a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set Holiday Variables" doc:id="b1e1664b-c5dd-45f8-a2d0-89723047f372" processor="ee:transform" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="40ce3f9c-f46a-4570-a787-bed15038e19c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-equals doc:name="Payload" doc:id="e1002bef-3b88-4e37-95bc-8e5c50586eb2" actual="#[payload]" expected="#['Invalid destination location' ++ ' ' ++ (vars.destination default ' ')]"/>
+		
+</munit:validation>
+	</munit:test>
+
+	<munit:test name="get-holiday-package-test-failure-3" doc:id="b8c5995b-93ca-4817-9a83-02a20adfb8d6" expectedErrorType="APP:INVALID_DATE">
+		<munit:execution>
+			<munit:set-event doc:name="Set Input" doc:id="02d34835-b6a8-4991-a218-30017fe4ada9">
+				<munit:attributes value="#[readUrl('classpath://getholidaypackagetest\set-event_attributes_3.dwl')]" />
+
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to GET\holiday-package" doc:id="1f448b8e-4e4e-4af5-bb5d-64c53b50f2c4" name="get-holiday-package-flow" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify Is Valid Source" doc:id="23123b21-624c-42fb-881e-21d1f3bda8cd" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="cc21cabc-28be-4e1d-8571-93454a2d85a6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Is Valid Destination" doc:id="c9b9cb64-dd57-47ee-ab0c-78575b4c700d" processor="validation:is-true">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0f555149-bbac-4cae-84b7-eb5e2d68455a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify iIs Valid Date" doc:id="24531158-cd9d-4f65-8095-d38a5ba732a9" processor="validation:is-true">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cbedd4eb-cb8d-4449-aa10-20f9083f0331" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set Holiday Variables" doc:id="41dbc3a9-f7d8-4bae-a5ba-84b58cac7016" processor="ee:transform" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute whereValue="40ce3f9c-f46a-4570-a787-bed15038e19c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-equals doc:name="Payload" doc:id="fec1fb3d-f2ee-419e-9fd7-d297255945be" actual="#[payload]" expected="#['Invalid bookingDate. Booking date cannot be in past.' ++ ' ' ++ (vars.bookingDate default ' ')]"/>
+		
+</munit:validation>
+	</munit:test>
+
+	
 	<munit:test name="get-flights-request-unit-test-success" doc:id="b5c8908d-94ef-45c4-b2d6-dbb79e153112">
 		<munit:behavior>
 			<munit-tools:mock-when doc:name="Mock getFlightsRequest" doc:id="4edff22c-3d3f-4668-aa29-43aff810ca70" processor="http:request">
@@ -194,14 +264,14 @@ assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
 		</munit:validation>
 	</munit:test>
 
-	<munit:test name="get-flights-request-unit-test-failure-2" doc:id="c8ceb6cd-63a0-4f63-aaa6-7c5ce041e4a2" expectedErrorType="FLIGHTS:BAD_REQUEST">
+	<munit:test name="get-flights-request-unit-test-failure-2" doc:id="c8ceb6cd-63a0-4f63-aaa6-7c5ce041e4a2" expectedErrorType="FLIGHTS:CONNECTION_ERROR">
 		<munit:behavior>
 			<munit-tools:mock-when doc:name="Mock getFlightsRequest" doc:id="99dad9bf-7815-4e17-ab5a-6d255a1189b2" processor="http:request">
 				<munit-tools:with-attributes>
 					<munit-tools:with-attribute whereValue="fd70f659-ac62-448d-a568-a5fb620b018d" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
-					<munit-tools:error typeId="FLIGHTS:BAD_REQUEST" />
+					<munit-tools:error typeId="FLIGHTS:CONNECTION_ERROR" />
 				</munit-tools:then-return>
 			
 
@@ -283,10 +353,7 @@ assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
 					<munit-tools:with-attribute whereValue="e845bdff-b337-4725-ae57-b83617b8ad73" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
-					<munit-tools:error typeId="CAR_BAD_REQUEST" />
-					<munit-tools:variables >
-						<munit-tools:variable key="pickUpCab" value="#[output application/json --- readUrl('classpath://getCarRequesttest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
-					</munit-tools:variables>
+					<munit-tools:error typeId="CAR:BAD_REQUEST" />
 				</munit-tools:then-return>
 			
 </munit-tools:mock-when>
@@ -294,7 +361,6 @@ assert_expression_variables::main({vars: vars})]]]></munit-tools:that>
 		<munit:execution>
 			<munit:set-event doc:name="Set Input" doc:id="0cbc9d66-9e3b-4061-81f1-9d760aeb9e7e">
 				<munit:variables >
-					<munit:variable key="destination" value="#[output application/java --- readUrl('classpath://getCarRequesttest\set-event_variable_2.dwl')]" encoding="UTF-8" mediaType="application/java" />
 					<munit:variable key="correlationID" value="#[output application/java --- readUrl('classpath://getCarRequesttest\set-event_variable_3.dwl')]" encoding="UTF-8" mediaType="application/java" />
 				</munit:variables>
 
@@ -406,14 +472,14 @@ assert_expression_variables_1::main({vars: vars})]]]></munit-tools:that>
 		
 	</munit:test>
 	
-			<munit:test name="get-hotels-request-unit-test-failure-2" doc:id="86e0737a-c4a9-4871-b684-5a23218a3aec" description="Test" expectedErrorType="HOTELS:BAD_REQUEST">
+			<munit:test name="get-hotels-request-unit-test-failure-2" doc:id="86e0737a-c4a9-4871-b684-5a23218a3aec" description="Test" expectedErrorType="HOTELS:CONNECTION_ERROR">
 				<munit:behavior>
 			<munit-tools:mock-when doc:name="Mock getHotelsRequest" doc:id="15d3bee3-32c6-4241-b018-a71734bfb68e" processor="http:request">
 				<munit-tools:with-attributes>
 					<munit-tools:with-attribute whereValue="968266ca-6402-4014-b18e-ac691d23a218" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
-					<munit-tools:error typeId="HOTELS:BAD_REQUEST" />
+					<munit-tools:error typeId="HOTELS:CONNECTION_ERROR" />
 					<munit-tools:variables >
 						<munit-tools:variable key="hotels" value="#[output application/json --- readUrl('classpath://getHotelsRequesttest\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
 					</munit-tools:variables>

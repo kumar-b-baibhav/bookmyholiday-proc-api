@@ -13,7 +13,7 @@
   "method": "GET",
   "scheme": "http",
   "queryParams": {
-    "source": "DEL",
+    "source": "GOA",
     "destination": "KOL"
   },
   "requestUri": "/api/holiday-package?source=DEL&destination=KOL",
