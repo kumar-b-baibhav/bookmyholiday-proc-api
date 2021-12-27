@@ -30,7 +30,6 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
-				
 				<configuration>
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
@@ -46,10 +45,10 @@
 						<properties>
 							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+							<truststore.key>${truststore.key}</truststore.key>
 						</properties>
 					</cloudHubDeployment>
 				</configuration>
-				
 			</plugin>
 			<plugin>
 				<groupId>com.mulesoft.munit.tools</groupId>
@@ -129,11 +128,17 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>8251acbe-4f09-475c-8976-a438433682d9</groupId>
+			<groupId>aea829b0-338a-4cf5-83a7-8eb8ac279926</groupId>
 			<artifactId>bookmyholiday-proc-api</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.0</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.modules</groupId>
+			<artifactId>mule-secure-configuration-property-module</artifactId>
+			<version>1.2.3</version>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
 

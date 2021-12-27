@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
-	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:os="http://www.mulesoft.org/schema/mule/os"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
-http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
 	<http:listener-config name="bookmyholiday-proc-api-httpListenerConfig">
         <http:listener-connection host="${http.host}" port="${http.port}" />
     </http:listener-config>
@@ -19,7 +20,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:request-config name="Hotels_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="e2f12002-d912-41fb-b8b6-49f42e335776">
 		<http:request-connection host="${https.hotels.host}" port="${https.hotels.port}" protocol="HTTPS">
 			<tls:context >
-				<tls:trust-store path="certs/client-truststore.jks" insecure="true" password="12345678" type="jks"/>
+				<tls:trust-store path="certs/client-truststore.jks" insecure="true" password="${secure::truststore.password}" type="jks"/>
 			</tls:context>
 		</http:request-connection>
 	</http:request-config>
@@ -36,7 +37,10 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="9a46a403-8c19-42d2-9d91-a112e4a92f2f" keyGenerationExpression="#[vars.source ++ vars.destination ++ vars.flightClass ++ vars.hotelRoomType01 ++ vars.noOfDays as String ++ vars.bookingDate as String ++ vars.noOfGuests as String]">
 		<os:private-object-store maxEntries="10" entryTtl="5" entryTtlUnit="MINUTES" expirationInterval="30" expirationIntervalUnit="SECONDS" config-ref="ObjectStore_Config" alias="hotelDetails"/>
 	</ee:object-store-caching-strategy>
-	<api-gateway:autodiscovery apiId="17528817" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="244d781d-4d7d-4d09-a5f4-594ef22ce54d" flowRef="bookmyholiday-proc-api-main" />
+	<api-gateway:autodiscovery apiId="17534041" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="244d781d-4d7d-4d09-a5f4-594ef22ce54d" flowRef="bookmyholiday-proc-api-main" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="29e7cdc4-946f-4e55-b33f-830c9942679d" file="secure.properties" key="${truststore.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
 
 
 </mule>
